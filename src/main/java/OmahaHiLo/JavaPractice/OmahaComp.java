@@ -40,6 +40,7 @@ public class OmahaComp
 			new Straight(),
 			new ThreeOfAKind(),
 			new TwoPairs(),
+			new OnePair(),
 			new HighCard(),
 	};
 	public final static RankingRule low8 = new Low8();
@@ -118,7 +119,6 @@ public class OmahaComp
 	 */
 	public static String EvaluatePlayers(Player[] players, BoardCards boardCards) 
 	{
-		String result = null;
 		// Evaluate for both player A and B
 		WinnerRankCards PlayerA = new WinnerRankCards();
 		WinnerRankCards PlayerB = new WinnerRankCards();
@@ -126,14 +126,11 @@ public class OmahaComp
 		{
 			Player player = players[playerIndex];
 			// All combinations for the 2 out of the 4 received cards
-			List<Card[]> fiveCardCombinations = player.CombineAsFiveCards(boardCards.PickCards());
-			Map<RankingRule, Card[]> highRanked = Player.FilterByHighRankingRules(fiveCardCombinations, OmahaHiRankingRules);
-			Map<RankingRule, Card[]> low8Ranked = Player.FilterByOneRankingRule(fiveCardCombinations, low8);
+			Map<RankingRule, Card[]> highRanked = Player.FilterByHighRankingRules(player.CombineAsFiveCards(boardCards.PickCards()), OmahaHiRankingRules);
+			Map<RankingRule, Card[]> low8Ranked = Player.FilterByOneRankingRule(player.CombineAsFiveCards(boardCards.PickCards()), low8);
 			// Handle the ranking result for both players
 			if (!highRanked.isEmpty())
 			{
-				//Iterator<Map.Entry<RankingRule, Card[]>> itr = highRanked.entrySet().iterator();
-				//Map.Entry<RankingRule, Card[]> entry = itr.next();
 				if (playerIndex == 0)
 				{
 					PlayerA.highRanked = highRanked;
@@ -145,11 +142,6 @@ public class OmahaComp
 			}
 			if (!low8Ranked.isEmpty())
 			{
-//				Iterator<Map.Entry<RankingRule, Card[]>> itr = low8Ranked.entrySet().iterator();
-//				Map.Entry<RankingRule, Card[]> entry = itr.next();
-//		    	Card[] cards0 = entry.getValue();
-//		    	Card[] cardsSorted = PokerUtils.SortCardsAscending(cards0, false);
-//		    	String ranks = PokerUtils.ConcatCardRankCharacterToString(cardsSorted);
 				if (playerIndex == 0)
 				{
 					PlayerA.low8Ranked = low8Ranked;
@@ -184,26 +176,30 @@ public class OmahaComp
 		    	int compareResult = rule.CompareCards(entryA.getValue(), entryB.getValue());
 		    	if (compareResult < 0)
 		    	{
-		    		displayText += " HandB wins Hi";
-		    		displayText += entryB.getKey();
+		    		displayText += " HandB wins Hi (";
+		    		displayText += entryB.getKey().GetName() + ")";
 		    	}
 		    	else if (compareResult > 0)
 		    	{
-		    		displayText += " HandA wins Hi";
+		    		displayText += " HandA wins Hi (";
+		    		displayText += entryA.getKey().GetName() + ")";
 		    	}
 		    	else
 		    	{
-			    	displayText += " Split Pot Hi";
+			    	displayText += " Split Pot Hi (";
+		    		displayText += entryA.getKey().GetName() + ")";
 		    	}
 
 			}
 			else if (priorityA > priorityB)
 			{
-	    		displayText += " HandB wins Hi";
+	    		displayText += " HandB wins Hi (";
+	    		displayText += entryB.getKey().GetName() + ")";
 			}
 			else
 			{
-	    		displayText += " HandA wins Hi";
+	    		displayText += " HandA wins Hi (";
+	    		displayText += entryA.getKey().GetName() + ")";
 			}
 		}
 		
@@ -218,11 +214,11 @@ public class OmahaComp
 		    int compareResult = rule.CompareCards(entryA.getValue(), entryB.getValue());
 		   	if (compareResult < 0)
 		    {
-		    	displayText += " HandB wins Lo (" + GetRankChars(PlayerB.low8Ranked) + ")";;
+		    	displayText += " HandB wins Lo (" + GetRankChars(PlayerB.low8Ranked) + ")";
 		    }
 		    else
 		    {
-		    	displayText += " Split Pot Lo";
+		    	displayText += " Split Pot Lo (" + GetRankChars(PlayerB.low8Ranked) + ")";
 		    }
 		}
 		// A Lo, B no-Low

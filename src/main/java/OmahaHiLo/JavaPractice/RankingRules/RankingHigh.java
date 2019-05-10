@@ -9,7 +9,7 @@ public abstract class RankingHigh implements RankingRule {
 	{
 		this.ruleName = ruleName;
 	}
-	public String GetRuleName()
+	public String GetName()
 	{
 		return ruleName;
 	}

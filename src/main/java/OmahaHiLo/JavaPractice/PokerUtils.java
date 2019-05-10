@@ -243,26 +243,33 @@ public class PokerUtils {
 	{
 		if (matchedHands.size() > 0)
 		{
-			// Find the first valid hand of cards, check Low8 specifically
-			Card[] cardsMaxValued = null;
-			int validIndex = 0;
-			do
+			// If the ranking rule is low 8, filter out those not qualified
+			List<Card[]> qualifiedHands = new ArrayList<Card[]>();
+			if (rule instanceof Low8)
 			{
-				cardsMaxValued = matchedHands.get(validIndex++);
-			} while (!QualifyLow8(cardsMaxValued, rule) && validIndex <matchedHands.size());
-			if (!QualifyLow8(cardsMaxValued, rule))
-			{
-				return null;
+				for (int i = 0; i < matchedHands.size(); ++i)
+				{
+					Card[] hand = matchedHands.get(i);
+					if (rule.ApplyToHandOfCards(hand))
+					{
+						qualifiedHands.add(hand);
+					}
+				}
+				if (qualifiedHands.isEmpty())
+				{
+					return null;
+				}
 			}
-
-			for (int i = 1; i < matchedHands.size(); ++i)
+			else
 			{
-		    	Card[] cards = matchedHands.get(i);
-		    	// Specifically for Low8
-		    	if (!QualifyLow8(cards, rule))
-		    	{
-		    		continue;
-		    	}
+				qualifiedHands = matchedHands;
+			}
+			
+			// Find the most valued hand
+			Card[] cardsMaxValued = qualifiedHands.get(0);
+			for (int i = 1; i < qualifiedHands.size(); ++i)
+			{
+		    	Card[] cards = qualifiedHands.get(i);
 		    	// Find the better one
 		    	if (rule.CompareCards(cards, cardsMaxValued) > 0)
 		    	{

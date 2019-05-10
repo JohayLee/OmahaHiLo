@@ -8,6 +8,12 @@ import java.util.Set;
 
 public class Low8 implements RankingRule 
 {
+	// Low8 ranking rule has no specific name. 
+	public String GetName()
+	{
+		return null;
+	}
+		
 	public boolean ApplyToHandOfCards(Card[] aHandOfCards)
 	{
 		// 1. None of the cards is higher than 8
