@@ -25,7 +25,7 @@ public class OnePair extends RankingHigh {
 	@Override
 	public int CompareCards(Card[] handA, Card[] handB)
 	{
-		// Sort - put the rank kind with 2 of them at the beginning
+		// Sort - put the rank kind with 2 identical at the beginning
 		Card[] sortHandA = PokerUtils.SortByRepetitionAhead(handA, 2);
 		Card[] sortHandB = PokerUtils.SortByRepetitionAhead(handB, 2);
 		// Compare one by one

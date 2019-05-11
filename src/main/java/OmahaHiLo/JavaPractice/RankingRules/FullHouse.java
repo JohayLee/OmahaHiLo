@@ -21,7 +21,7 @@ public class FullHouse extends RankingHigh {
 	@Override
 	public int CompareCards(Card[] handA, Card[] handB)
 	{
-		// Sort - put the rank kind with three of them at the beginning
+		// Sort - put the rank kinds with three identical at the beginning
 		Card[] sortHandA = PokerUtils.SortByRepetitionAhead(handA, 3);
 		Card[] sortHandB = PokerUtils.SortByRepetitionAhead(handB, 3);
 		// Compare

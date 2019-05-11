@@ -212,9 +212,11 @@ public class PokerUtils {
 	public static int CompareStraightCards(Card[] handA, Card[] handB)
 	{
 		
-		// If a straight has rank 2, the Ace is considered as 1.
-		boolean isAceTopRankingforHandA = CheckStraightHandContainsTwo(handA) ? false : true;
-		boolean isAceTopRankingforHandB = CheckStraightHandContainsTwo(handB) ?  false : true;
+		// If a straight has rank 2 but not K, the Ace is considered as 1.
+		boolean isAceTopRankingforHandA = CheckStraightHandContainsSpecificRank(handA, 2) ? 
+				(CheckStraightHandContainsSpecificRank(handA, 13) ? false : true ) : false;
+		boolean isAceTopRankingforHandB = CheckStraightHandContainsSpecificRank(handB, 2) ?
+				(CheckStraightHandContainsSpecificRank(handA, 13) ? false : true ) : false;
 		handA = PokerUtils.SortCardsDescending(handA, isAceTopRankingforHandA);
 		handB = PokerUtils.SortCardsDescending(handB, isAceTopRankingforHandB);
 		if (isAceTopRankingforHandA == isAceTopRankingforHandB)
@@ -227,11 +229,11 @@ public class PokerUtils {
 		}
 	}
 	
-	public static boolean CheckStraightHandContainsTwo(Card[] hand)
+	public static boolean CheckStraightHandContainsSpecificRank(Card[] hand, int specificRankValue)
 	{
 		for (int i = 0; i < hand.length; i++)
 		{
-			if (hand[i].GetRankValue(true) == 2)
+			if (hand[i].GetRankValue(true) == specificRankValue)
 			{
 				return true;
 			}

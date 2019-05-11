@@ -12,17 +12,62 @@ import java.util.Scanner;
 
 /**
  * Poker Ohama Hi/Lo evaulation.
- * The general modeling simulates the real world activity:
- * Each line of input file is consider as a game with two players and cards on board.
- * Reading a line from the input file is like dispatching cards (DispatchCards), then 
- * the application tries to EvaluatePlayers, in fact it actually asks each player to
- * combine 2 of their received cards with the 3 board cards for all the combination 
- * possibilities. For each and all combinations the player tries to evaluate and get 
- * all the rank values for both high and low 8. Since all combination possibilities 
- * are evaluated, all the possible ranks are achieved. The player picks the best high 
- * rank value and the best low one to compare with the other player, who has done the 
- * same processing.
+ * The general modeling follows the real world activities:
+ * Each line of input file is considered as a round of game with two players and
+ * cards on board. Reading a line from the input file is like dispatching cards. 
+ * the application then tries to EvaluatePlayers, which tells each player to combine
+ * 2 of his/her received cards with the 3 picked from the board. All the 60 combination
+ * possibilities are filtered with ranking rules, i.e., high ranks like straight, 
+ * flush, 4-of-a-kind etc. and the low8 rank rule for each player. Then each the player 
+ * finds the max-valued combinations for both high and low8. The comparison text result
+ * between the max-valued combinations of the two players are generated to write out to
+ * the output file. 
+ * For every and each ranking rule, it has two import methods: 
+ * 1. ApplyToHandOfCards - to check if a hand of 5 cards is qualified for the rule.
+ * 2. CompareCards - to decide which one of the two hand of cards is more valuable.
+ * The algorithms for the above methods are described below for the ranking rules:
+ * Straight: 
+ * ApplyToHandOfCards -sort rank descending and then check if the neighbor difference is 1.
+ * CompareCards -compare rank one by one.
+ * Flush:
+ * ApplyToHandOfCards - Check if suits identical.
+ * CompareCards -same as above.
+ * StraightFlush:
+ * ApplyToHandOfCards - Check both Straight and Flush.
+ * CompareCards -same as above.
+ * 4-of-a-kind:
+ * ApplyToHandOfCards - Construct rank to same-rank-count map, check if the map 
+ * 						contains same-rank-count 4.
+ * CompareCards -sort cards as most-repeated rank first, then compare by rank one by one.
+ * FullHouse:
+ * ApplyToHandOfCards - Construct rank to same-rank-count map, check if the map contains
+ * 						both same-rank-count 3 and same-rank-count 2.
+ * CompareCards -sort cards as most-repeated rank first, then compare by rank one by one.
+ * 3-of-a-kind:
+ * ApplyToHandOfCards - Construct rank to same-rank-count map, check if the map 
+ * 						contains same-rank-count 3.
+ * CompareCards -sort cards as most-repeated rank first, then rank descending. Compare by 
+ * 						rank one by one.
+ * One pair:
+ * ApplyToHandOfCards - Construct rank to same-rank-count map, check if the same-ranks occur
+ * 						once only. 
+ * CompareCards -sort cards as most-repeated rank first, then rank descending. Compare by 
+ * 						rank one by one.
+ * Two pairs:
+ * ApplyToHandOfCards - Construct rank to same-rank-count map, check if the same-ranks occur
+ * 						twice. 
+ * CompareCards -sort cards as most-repeated rank first, as there are two pairs, which pair 
+ * 						goes first based on its rank descending. Compare by	rank one by one.
+ * High card:
+ * ApplyToHandOfCards - Always returns true. 
+ * CompareCards -sort cards descending. Compare by rank one by one.
  * 
+ * Low 8:
+ * ApplyToHandOfCards - Check to make sure none of the card is higher than 8. Also collect a
+ * 						distinct-ranked hash-set, return false at the element adding if any
+ * 						rank already exists. If none identical rank, return true.    
+ * CompareCards -sort cards descending. Compare by rank one by one.
+ *
  * To simplify, the program is not segregated to different layers, e.g., The ranking 
  * rule name etc. is just put into a rule object although it is supposed to be in the
  * presentation layer.
@@ -84,6 +129,7 @@ public class OmahaComp
 
 				// 2: Now evaluate for each player.
 				EvaluatePlayers(players, boardCards);
+				
 				// 3: Output the result to a line in the output file
 				String result =  GeneratePresentation(players);
 				fileWriter.write(inputLine + System.lineSeparator()); // Write the input line first
@@ -140,8 +186,9 @@ public class OmahaComp
 	}
 	
 	/**
-	 * DispatchCards - 1. to dispatch cards for the two players, 2. to set the board
-	 * cards
+	 * DispatchCards 
+	 * 1. Each player receives his/her four cards, 
+	 * 2. Five cards are set to the board.
 	 * 
 	 * @param inputLine
 	 * @param players
@@ -174,8 +221,6 @@ public class OmahaComp
 		
 		Player playerA = players[0];
 		Player playerB = players[1];
-		// A
-		
 		
 		// A Hi; B Hi - Hi always exists, compare to win
 		if (CheckRankedHandExist(playerA.highRanked) && CheckRankedHandExist(playerB.highRanked))

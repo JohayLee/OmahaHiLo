@@ -25,7 +25,7 @@ public class ThreeOfAKind extends RankingHigh {
 	@Override
 	public int CompareCards(Card[] handA, Card[] handB)
 	{
-		// Sort - put the rank kind with three of them at the beginning
+		// Sort - put the rank kind with 3 identical of them at the beginning
 		Card[] sortHandA = PokerUtils.SortByRepetitionAhead(handA, 3);
 		Card[] sortHandB = PokerUtils.SortByRepetitionAhead(handB, 3);
 		// Compare
