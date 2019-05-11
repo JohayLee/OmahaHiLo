@@ -24,6 +24,9 @@ public class Player {
 		this.playerName = playerName;
 	}
 	
+	public Map<RankingRule, Card[]> highRanked;
+	public Map<RankingRule, Card[]> low8Ranked;
+	
 	// A cardNotationString contains card notations linked by a dash, e.g. Ac-Kd-Jd-3d
 	public void ReceiveCards(String cardNotationsString)
 	{

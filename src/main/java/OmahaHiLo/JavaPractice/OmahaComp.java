@@ -77,8 +77,15 @@ public class OmahaComp
 			// Evaluate every input line
 			for (String inputLine : inputList) 
 			{
-				String result = Evaluate(inputLine);
+				// 1: Get players and cards on the board from each input line.
+				Player players[] = new Player[NUM_PLAYERS]; // index 0 - player A, 1 - player B
+				BoardCards boardCards = new BoardCards();
+				DispatchCards(inputLine, players, boardCards);
+
+				// 2: Now evaluate for each player.
+				EvaluatePlayers(players, boardCards);
 				// 3: Output the result to a line in the output file
+				String result =  GeneratePresentation(players);
 				fileWriter.write(inputLine + System.lineSeparator()); // Write the input line first
 				fileWriter.write("=> " + result); // Write the result
 				fileWriter.write(System.lineSeparator()); // Write a blank line
@@ -93,152 +100,24 @@ public class OmahaComp
 	}
 
 	/**
-	 * Evaluate one input line
-	 * 
-	 * @param inputLine
-	 * @return
-	 */
-	public static String Evaluate(String inputLine) 
-	{
-		// 1: Get players and cards on the board from each input line.
-		Player players[] = new Player[NUM_PLAYERS]; // index 0 - player A, 1 - player B
-		BoardCards boardCards = new BoardCards();
-		DispatchCards(inputLine, players, boardCards);
-
-		// 2: Now evaluate for each player.
-		return EvaluatePlayers(players, boardCards);
-
-	}
-
-	/**
 	 * Evaluate all the combinations 2 received cards and the 3 board cards for each player.
 	 * 
 	 * @param players
 	 * @param boardCards
 	 * @return
 	 */
-	public static String EvaluatePlayers(Player[] players, BoardCards boardCards) 
+	public static void EvaluatePlayers(Player[] players, BoardCards boardCards) 
 	{
 		// Evaluate for both player A and B
-		WinnerRankCards PlayerA = new WinnerRankCards();
-		WinnerRankCards PlayerB = new WinnerRankCards();
-		for (int playerIndex = 0; playerIndex < players.length; ++playerIndex) 
+		for (int i = 0; i < players.length; ++i) 
 		{
-			Player player = players[playerIndex];
 			// All combinations for the 2 out of the 4 received cards
-			Map<RankingRule, Card[]> highRanked = Player.FilterByHighRankingRules(player.CombineAsFiveCards(boardCards.PickCards()), OmahaHiRankingRules);
-			Map<RankingRule, Card[]> low8Ranked = Player.FilterByOneRankingRule(player.CombineAsFiveCards(boardCards.PickCards()), low8);
 			// Handle the ranking result for both players
-			if (!highRanked.isEmpty())
-			{
-				if (playerIndex == 0)
-				{
-					PlayerA.highRanked = highRanked;
-				}
-				else
-				{
-					PlayerB.highRanked = highRanked;
-				}
-			}
-			if (!low8Ranked.isEmpty())
-			{
-				if (playerIndex == 0)
-				{
-					PlayerA.low8Ranked = low8Ranked;
-				}
-				else
-				{
-					PlayerB.low8Ranked = low8Ranked;
-				}
-			}
-			
+			players[i].highRanked = Player.FilterByHighRankingRules(players[i].CombineAsFiveCards(boardCards.PickCards()), OmahaHiRankingRules);
+			players[i].low8Ranked = Player.FilterByOneRankingRule(players[i].CombineAsFiveCards(boardCards.PickCards()), low8);
 		}
-		return  GeneratePresentation(PlayerA, PlayerB);
 	}
 
-	public static String GeneratePresentation(WinnerRankCards PlayerA, WinnerRankCards PlayerB)
-	{
-		// Compare the the rankedHands from player A and B to get the result.
-		String displayText = "";
-		
-		// A Hi, B Hi - Hi always exists, compare to win
-		if (PlayerA.highRanked != null && PlayerB.highRanked != null)
-		{
-			// Compare who is the winner
-			Map.Entry<RankingRule, Card[]> entryA = PlayerA.highRanked.entrySet().iterator().next();
-			Map.Entry<RankingRule, Card[]> entryB = PlayerB.highRanked.entrySet().iterator().next();
-			int priorityA = GetRankRulePriority(entryA.getKey());
-			int priorityB = GetRankRulePriority(entryB.getKey());
-			if (priorityA == priorityB)
-			{
-				// Compare
-				RankingRule rule = entryA.getKey();
-		    	int compareResult = rule.CompareCards(entryA.getValue(), entryB.getValue());
-		    	if (compareResult < 0)
-		    	{
-		    		displayText += " HandB wins Hi (";
-		    		displayText += entryB.getKey().GetName() + ")";
-		    	}
-		    	else if (compareResult > 0)
-		    	{
-		    		displayText += " HandA wins Hi (";
-		    		displayText += entryA.getKey().GetName() + ")";
-		    	}
-		    	else
-		    	{
-			    	displayText += " Split Pot Hi (";
-		    		displayText += entryA.getKey().GetName() + ")";
-		    	}
-
-			}
-			else if (priorityA > priorityB)
-			{
-	    		displayText += " HandB wins Hi (";
-	    		displayText += entryB.getKey().GetName() + ")";
-			}
-			else
-			{
-	    		displayText += " HandA wins Hi (";
-	    		displayText += entryA.getKey().GetName() + ")";
-			}
-		}
-		
-		// A Lo, B Lo - compare to win
-		if (PlayerA.low8Ranked != null && PlayerB.low8Ranked != null)
-		{
-			// Compare who is the winner
-			Map.Entry<RankingRule, Card[]> entryA = PlayerA.low8Ranked.entrySet().iterator().next();
-			Map.Entry<RankingRule, Card[]> entryB = PlayerB.low8Ranked.entrySet().iterator().next();
-			// Compare
-			RankingRule rule = entryA.getKey();
-		    int compareResult = rule.CompareCards(entryA.getValue(), entryB.getValue());
-		   	if (compareResult < 0)
-		    {
-		    	displayText += " HandB wins Lo (" + GetRankChars(PlayerB.low8Ranked) + ")";
-		    }
-		    else
-		    {
-		    	displayText += " Split Pot Lo (" + GetRankChars(PlayerB.low8Ranked) + ")";
-		    }
-		}
-		// A Lo, B no-Low
-		else if (PlayerA.low8Ranked != null && PlayerB.low8Ranked == null)
-		{
-			displayText += " HandA wins Lo (" + GetRankChars(PlayerA.low8Ranked) + ")";
-		}
-		// A no-Low, B Low
-		else if (PlayerA.low8Ranked == null && PlayerB.low8Ranked != null)
-		{
-			displayText += " HandB wins Lo (" + GetRankChars(PlayerB.low8Ranked) + ")";
-		}
-		// A no-Low, B no-Low
-		else if (PlayerA.low8Ranked == null && PlayerB.low8Ranked == null)
-		{
-			displayText += " No hand qualified for Lo";
-		
-		}
-		return displayText;
-	}
 	private static String GetRankChars(Map<RankingRule, Card[]> rankedCards)
 	{
 		Iterator<Map.Entry<RankingRule, Card[]>> itr = rankedCards.entrySet().iterator();
@@ -287,4 +166,111 @@ public class OmahaComp
 		boardCards.SetCards(boardNameAndReceivedCards[1]);
 	}
 
+	// Generate the output text result
+	public static String GeneratePresentation(Player[] players)
+	{
+		// Compare the the rankedHands from player A and B to get the result.
+		String displayText = "";
+		
+		Player playerA = players[0];
+		Player playerB = players[1];
+		// A
+		
+		
+		// A Hi; B Hi - Hi always exists, compare to win
+		if (CheckRankedHandExist(playerA.highRanked) && CheckRankedHandExist(playerB.highRanked))
+		{
+			// Compare who is the winner
+			Map.Entry<RankingRule, Card[]> entryA = playerA.highRanked.entrySet().iterator().next();
+			Map.Entry<RankingRule, Card[]> entryB = playerB.highRanked.entrySet().iterator().next();
+			int priorityA = GetRankRulePriority(entryA.getKey());
+			int priorityB = GetRankRulePriority(entryB.getKey());
+			if (priorityA == priorityB)
+			{
+				// Compare
+				RankingRule rule = entryA.getKey();
+		    	int compareResult = rule.CompareCards(entryA.getValue(), entryB.getValue());
+		    	if (compareResult < 0)
+		    	{
+		    		displayText += " HandB wins Hi (";
+		    		displayText += entryB.getKey().GetName() + ")";
+		    	}
+		    	else if (compareResult > 0)
+		    	{
+		    		displayText += " HandA wins Hi (";
+		    		displayText += entryA.getKey().GetName() + ")";
+		    	}
+		    	else
+		    	{
+			    	displayText += " Split Pot Hi (";
+		    		displayText += entryA.getKey().GetName() + ")";
+		    	}
+
+			}
+			else if (priorityA > priorityB)
+			{
+	    		displayText += " HandB wins Hi (";
+	    		displayText += entryB.getKey().GetName() + ")";
+			}
+			else
+			{
+	    		displayText += " HandA wins Hi (";
+	    		displayText += entryA.getKey().GetName() + ")";
+			}
+		}
+		
+		// A Lo, B Lo - compare to win
+		if (CheckRankedHandExist(playerA.low8Ranked) && CheckRankedHandExist(playerB.low8Ranked))
+		{
+			// Compare who is the winner
+			Map.Entry<RankingRule, Card[]> entryA = playerA.low8Ranked.entrySet().iterator().next();
+			Map.Entry<RankingRule, Card[]> entryB = playerB.low8Ranked.entrySet().iterator().next();
+			// Compare
+			RankingRule rule = entryA.getKey();
+		    int compareResult = rule.CompareCards(entryA.getValue(), entryB.getValue());
+		   	if (compareResult < 0)
+		    {
+		    	displayText += " HandB wins Lo (" + GetRankChars(playerB.low8Ranked) + ")";
+		    }
+		    else
+		    {
+		    	displayText += " Split Pot Lo (" + GetRankChars(playerB.low8Ranked) + ")";
+		    }
+		}
+		// A Lo, B no-Low
+		else if (CheckRankedHandExist(playerA.low8Ranked) && !CheckRankedHandExist(playerB.low8Ranked))
+		{
+			displayText += " HandA wins Lo (" + GetRankChars(playerA.low8Ranked) + ")";
+		}
+		// A no-Low, B Low
+		else if (!CheckRankedHandExist(playerA.low8Ranked) && CheckRankedHandExist(playerB.low8Ranked))
+		{
+			displayText += " HandB wins Lo (" + GetRankChars(playerB.low8Ranked) + ")";
+		}
+		// A no-Low, B no-Low
+		else if (!CheckRankedHandExist(playerA.low8Ranked) && !CheckRankedHandExist(playerB.low8Ranked))
+		{
+			displayText += " No hand qualified for Lo";
+		
+		}
+		return displayText;
+	}
+	
+	private static boolean CheckRankedHandExist(Map<RankingRule, Card[]> rankedHand)
+	{
+		
+		boolean result = false;
+		try
+		{
+			result = rankedHand != null 
+				&& rankedHand.entrySet() != null
+				&& rankedHand.entrySet().iterator() != null
+				&& rankedHand.entrySet().iterator().next() != null;
+		}
+		catch(Exception e)
+		{
+			result = false;
+		}
+		return result;
+	}
 }
