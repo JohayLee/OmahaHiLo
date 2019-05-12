@@ -37,15 +37,15 @@ public class FlushHandCompareTest
     public void testFlushHandCompareDiff()
     {
     	// Mock data
-    	Card[] cards1 = PokerUtils.GetCardsFromNotationsString("3c-6c-Tc-Jc-Kc");
-    	Card[] cards2 = PokerUtils.GetCardsFromNotationsString("2d-8d-4d-3d-Ad");
+    	Card[] cards1 = Presentation.GetCardsFromNotationsString("3c-6c-Tc-Jc-Kc");
+    	Card[] cards2 = Presentation.GetCardsFromNotationsString("2d-8d-4d-3d-Ad");
     	Flush rule = new Flush();
     	assertTrue(rule.CompareCards(cards1, cards2) < 0 );
     }
     public void testFourOfAKindHandCompareSame()
     {
-    	Card[] cards1 = PokerUtils.GetCardsFromNotationsString("2s-3h-8c-Ad-9d");
-    	Card[] cards2 = PokerUtils.GetCardsFromNotationsString("3s-Ac-2h-9c-8c");
+    	Card[] cards1 = Presentation.GetCardsFromNotationsString("2s-3h-8c-Ad-9d");
+    	Card[] cards2 = Presentation.GetCardsFromNotationsString("3s-Ac-2h-9c-8c");
     	FourOfAKind rule = new FourOfAKind();
     	assertTrue(rule.CompareCards(cards1, cards2) == 0 );
     }

@@ -10,7 +10,7 @@ public class BoardCards {
 	// A cardNotationString contains card notations linked by a dash, e.g. Ac-Kd-Jd-3d-Qd
 	public void SetCards(String cardNotationsString)
 	{
-		SetCards(PokerUtils.GetCardsFromNotationsString(cardNotationsString));
+		SetCards(Presentation.GetCardsFromNotationsString(cardNotationsString));
 	}
 	public void SetCards(Card[] cards)
 	{

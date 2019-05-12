@@ -41,7 +41,7 @@ public class PokerUtilsSortCardsTest
     	
     	// Sort the cards by rank high
     	boolean isHigh = true;
-    	Card[] sortedCards = PokerUtils.SortCardsAscending(cards, isHigh);
+    	Card[] sortedCards = CardsRankingUtils.SortCardsAscending(cards, isHigh);
     	assertTrue(sortedCards[0].GetRankValue(isHigh) == 2);
     	assertTrue(sortedCards[1].GetRankValue(isHigh) == 3);
     	assertTrue(sortedCards[2].GetRankValue(isHigh) == 12);
@@ -61,7 +61,7 @@ public class PokerUtilsSortCardsTest
     	
     	// Sort the cards by rank high
     	boolean isHigh = true;
-    	Card[] sortedCards = PokerUtils.SortCardsDescending(cards, isHigh);
+    	Card[] sortedCards = CardsRankingUtils.SortCardsDescending(cards, isHigh);
     	assertTrue(sortedCards[0].GetRankValue(isHigh) == 14);
     	assertTrue(sortedCards[1].GetRankValue(isHigh) == 13);
     	assertTrue(sortedCards[2].GetRankValue(isHigh) == 12);

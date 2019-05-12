@@ -1,7 +1,7 @@
 package OmahaHiLo.JavaPractice.RankingRules;
 
 import OmahaHiLo.JavaPractice.Card;
-import OmahaHiLo.JavaPractice.PokerUtils;
+import OmahaHiLo.JavaPractice.CardsRankingUtils;
 
 public class StraightFlush extends RankingHigh {
 

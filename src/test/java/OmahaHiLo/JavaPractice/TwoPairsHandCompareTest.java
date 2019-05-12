@@ -35,22 +35,22 @@ public class TwoPairsHandCompareTest
      */
     public void testTwoPairsHandCompare2RepetitionDiff()
     {
-    	Card[] cards1 = PokerUtils.GetCardsFromNotationsString("Ad-Ah-Ks-Kh-Qs");
-    	Card[] cards2 = PokerUtils.GetCardsFromNotationsString("Ts-Td-Jh-Jd-Ad");
+    	Card[] cards1 = Presentation.GetCardsFromNotationsString("Ad-Ah-Ks-Kh-Qs");
+    	Card[] cards2 = Presentation.GetCardsFromNotationsString("Ts-Td-Jh-Jd-Ad");
     	TwoPairs rule = new TwoPairs();
     	assertTrue(rule.CompareCards(cards1, cards2) > 0 );
     }
     public void testTwoPairsHandCompareSingleDiff()
     {
-    	Card[] cards1 = PokerUtils.GetCardsFromNotationsString("8h-8c-Tc-Ts-Jc");
-    	Card[] cards2 = PokerUtils.GetCardsFromNotationsString("Qs-Qh-4d-4s-7d");
+    	Card[] cards1 = Presentation.GetCardsFromNotationsString("8h-8c-Tc-Ts-Jc");
+    	Card[] cards2 = Presentation.GetCardsFromNotationsString("Qs-Qh-4d-4s-7d");
     	TwoPairs rule = new TwoPairs();
     	assertTrue(rule.CompareCards(cards1, cards2) < 0 );
     }
     public void testTwoPairsHandCompareSame()
     {
-    	Card[] cards1 = PokerUtils.GetCardsFromNotationsString("8h-8c-Tc-Ts-Jc");
-    	Card[] cards2 = PokerUtils.GetCardsFromNotationsString("Tc-8h-8c-Ts-Jd");
+    	Card[] cards1 = Presentation.GetCardsFromNotationsString("8h-8c-Tc-Ts-Jc");
+    	Card[] cards2 = Presentation.GetCardsFromNotationsString("Tc-8h-8c-Ts-Jd");
     	TwoPairs rule = new TwoPairs();
     	assertTrue(rule.CompareCards(cards1, cards2) == 0 );
     }

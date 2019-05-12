@@ -35,22 +35,22 @@ public class FullHouseHandCompareTest
      */
     public void testFullHouseHandCompare3RepetitionDiff()
     {
-    	Card[] cards1 = PokerUtils.GetCardsFromNotationsString("Kc-Ah-Ac-Kc-As");
-    	Card[] cards2 = PokerUtils.GetCardsFromNotationsString("Ks-Ad-Kh-Kd-Ad");
+    	Card[] cards1 = Presentation.GetCardsFromNotationsString("Kc-Ah-Ac-Kc-As");
+    	Card[] cards2 = Presentation.GetCardsFromNotationsString("Ks-Ad-Kh-Kd-Ad");
     	FullHouse rule = new FullHouse();
     	assertTrue(rule.CompareCards(cards1, cards2) > 0 );
     }
     public void testFullHouseHandCompare2RepetitionDiff()
     {
-    	Card[] cards1 = PokerUtils.GetCardsFromNotationsString("3h-Kc-3c-3s-Ks");
-    	Card[] cards2 = PokerUtils.GetCardsFromNotationsString("3s-3h-Ad-3d-Ad");
+    	Card[] cards1 = Presentation.GetCardsFromNotationsString("3h-Kc-3c-3s-Ks");
+    	Card[] cards2 = Presentation.GetCardsFromNotationsString("3s-3h-Ad-3d-Ad");
     	FullHouse rule = new FullHouse();
     	assertTrue(rule.CompareCards(cards1, cards2) < 0 );
     }
     public void testFullHouseHandCompareSame()
     {
-    	Card[] cards1 = PokerUtils.GetCardsFromNotationsString("8h-8c-Tc-Ts-8c");
-    	Card[] cards2 = PokerUtils.GetCardsFromNotationsString("Tc-8h-8c-Ts-8d");
+    	Card[] cards1 = Presentation.GetCardsFromNotationsString("8h-8c-Tc-Ts-8c");
+    	Card[] cards2 = Presentation.GetCardsFromNotationsString("Tc-8h-8c-Ts-8d");
     	FullHouse rule = new FullHouse();
     	assertTrue(rule.CompareCards(cards1, cards2) == 0 );
     }

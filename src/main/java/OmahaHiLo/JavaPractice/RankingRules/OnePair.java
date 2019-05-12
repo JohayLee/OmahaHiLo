@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.Map;
 
 import OmahaHiLo.JavaPractice.Card;
-import OmahaHiLo.JavaPractice.PokerUtils;
+import OmahaHiLo.JavaPractice.CardsRankingUtils;
 
 public class OnePair extends RankingHigh {
 
@@ -15,7 +15,7 @@ public class OnePair extends RankingHigh {
 
 	public boolean ApplyToHandOfCards(Card[] aHandOfCards)
 	{
-		Map<Integer, Integer> mapRankToCount = PokerUtils.GetRankToCountMap(aHandOfCards, true);
+		Map<Integer, Integer> mapRankToCount = CardsRankingUtils.GetRankToCountMap(aHandOfCards, true);
 		Collection<Integer> occurenceCount = mapRankToCount.values();
 		int NumberOfPairOccurence = Collections.frequency(occurenceCount, 2);
 		return NumberOfPairOccurence == 1;
@@ -26,10 +26,10 @@ public class OnePair extends RankingHigh {
 	public int CompareCards(Card[] handA, Card[] handB)
 	{
 		// Sort - put the rank kind with 2 identical at the beginning
-		Card[] sortHandA = PokerUtils.SortByRepetitionAhead(handA, 2);
-		Card[] sortHandB = PokerUtils.SortByRepetitionAhead(handB, 2);
+		Card[] sortHandA = CardsRankingUtils.SortByRepetitionAhead(handA, 2);
+		Card[] sortHandB = CardsRankingUtils.SortByRepetitionAhead(handB, 2);
 		// Compare one by one
-		return PokerUtils.CompareCardsOneByOne(true, sortHandA, sortHandB, true);
+		return CardsRankingUtils.CompareCardsOneByOne(true, sortHandA, sortHandB, true);
 	}
 
 }

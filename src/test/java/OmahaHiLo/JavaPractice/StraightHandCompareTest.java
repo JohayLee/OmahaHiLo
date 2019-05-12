@@ -37,16 +37,16 @@ public class StraightHandCompareTest
     public void testStraightHandCompare()
     {
     	// Mock data
-    	Card[] cards1 = PokerUtils.GetCardsFromNotationsString("Ah-Ks-Jc-Qh-Th");
-    	Card[] cards2 = PokerUtils.GetCardsFromNotationsString("Qh-Js-Tc-9h-8d");
+    	Card[] cards1 = Presentation.GetCardsFromNotationsString("Ah-Ks-Jc-Qh-Th");
+    	Card[] cards2 = Presentation.GetCardsFromNotationsString("Qh-Js-Tc-9h-8d");
     	Straight r = new Straight();
     	assertTrue(r.CompareCards(cards1, cards2) > 0 );
     }
     public void testStraightHandCompareLess()
     {
     	// Mock data
-    	Card[] cards1 = PokerUtils.GetCardsFromNotationsString("Ah-2s-3c-4h-5h");
-    	Card[] cards2 = PokerUtils.GetCardsFromNotationsString("7h-6s-8c-9h-Td");
+    	Card[] cards1 = Presentation.GetCardsFromNotationsString("Ah-2s-3c-4h-5h");
+    	Card[] cards2 = Presentation.GetCardsFromNotationsString("7h-6s-8c-9h-Td");
     	Straight r = new Straight();
     	assertTrue(r.CompareCards(cards1, cards2) < 0 );
     }

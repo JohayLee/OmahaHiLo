@@ -35,22 +35,22 @@ public class FourOfAKindHandCompareTest
      */
     public void testFourOfAKindHandCompare4RepetitionDiff()
     {
-    	Card[] cards1 = PokerUtils.GetCardsFromNotationsString("Jc-Kh-Kc-Kd-Ks");
-    	Card[] cards2 = PokerUtils.GetCardsFromNotationsString("Qs-3d-Qh-Qd-Qc");
+    	Card[] cards1 = Presentation.GetCardsFromNotationsString("Jc-Kh-Kc-Kd-Ks");
+    	Card[] cards2 = Presentation.GetCardsFromNotationsString("Qs-3d-Qh-Qd-Qc");
     	FourOfAKind rule = new FourOfAKind();
     	assertTrue(rule.CompareCards(cards1, cards2) > 0 );
     }
     public void testFourOfAKindHandCompareSingleDiff()
     {
-    	Card[] cards1 = PokerUtils.GetCardsFromNotationsString("3h-3d-3c-3s-Jc");
-    	Card[] cards2 = PokerUtils.GetCardsFromNotationsString("3s-3h-3c-3d-Ad");
+    	Card[] cards1 = Presentation.GetCardsFromNotationsString("3h-3d-3c-3s-Jc");
+    	Card[] cards2 = Presentation.GetCardsFromNotationsString("3s-3h-3c-3d-Ad");
     	FourOfAKind rule = new FourOfAKind();
     	assertTrue(rule.CompareCards(cards1, cards2) < 0 );
     }
     public void testFourOfAKindHandCompareSame()
     {
-    	Card[] cards1 = PokerUtils.GetCardsFromNotationsString("3s-3h-3c-3d-Ad");
-    	Card[] cards2 = PokerUtils.GetCardsFromNotationsString("3s-Ad-3h-3c-3d");
+    	Card[] cards1 = Presentation.GetCardsFromNotationsString("3s-3h-3c-3d-Ad");
+    	Card[] cards2 = Presentation.GetCardsFromNotationsString("3s-Ad-3h-3c-3d");
     	FourOfAKind rule = new FourOfAKind();
     	assertTrue(rule.CompareCards(cards1, cards2) == 0 );
     }

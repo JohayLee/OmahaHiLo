@@ -3,7 +3,7 @@ package OmahaHiLo.JavaPractice.RankingRules;
 import java.util.Arrays;
 //import java.lang.Math;
 import OmahaHiLo.JavaPractice.Card;
-import OmahaHiLo.JavaPractice.PokerUtils;
+import OmahaHiLo.JavaPractice.CardsRankingUtils;
 
 public class Straight extends RankingHigh {
 
@@ -39,7 +39,7 @@ public class Straight extends RankingHigh {
 	public static boolean CheckStraight(Card[] aHandOfCards, boolean isAceTopRanking)
 	{
 		// Sort the cards before checking straight.
-		aHandOfCards = PokerUtils.SortCardsDescending(aHandOfCards, isAceTopRanking);
+		aHandOfCards = CardsRankingUtils.SortCardsDescending(aHandOfCards, isAceTopRanking);
 		// The delta between two elements shall be 1.
 		for (int i = 0; i < aHandOfCards.length - 1; i++)
 		{
@@ -77,9 +77,9 @@ public class Straight extends RankingHigh {
 		// If both Ace is considered as top ranking, they are both either TJQKA or A2345, so equal
 		if (isAceTopRankingforHandA == isAceTopRankingforHandB)
 		{
-			handA = PokerUtils.SortCardsDescending(handA, isAceTopRankingforHandA);
-			handB = PokerUtils.SortCardsDescending(handB, isAceTopRankingforHandB);
-			return PokerUtils.CompareCardsOneByOne(isAceTopRankingforHandA, handA, handB, true);
+			handA = CardsRankingUtils.SortCardsDescending(handA, isAceTopRankingforHandA);
+			handB = CardsRankingUtils.SortCardsDescending(handB, isAceTopRankingforHandB);
+			return CardsRankingUtils.CompareCardsOneByOne(isAceTopRankingforHandA, handA, handB, true);
 		}
 		// the one with Ace as top ranking bigger.
 		else

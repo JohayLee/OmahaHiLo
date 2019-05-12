@@ -30,7 +30,7 @@ public class Player {
 	// A cardNotationString contains card notations linked by a dash, e.g. Ac-Kd-Jd-3d
 	public void ReceiveCards(String cardNotationsString)
 	{
-		ReceiveCards(PokerUtils.GetCardsFromNotationsString(cardNotationsString));		
+		ReceiveCards(Presentation.GetCardsFromNotationsString(cardNotationsString));		
 	}
 	public void ReceiveCards(Card[] cards)
 	{

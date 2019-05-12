@@ -1,7 +1,7 @@
 package OmahaHiLo.JavaPractice.RankingRules;
 
 import OmahaHiLo.JavaPractice.Card;
-import OmahaHiLo.JavaPractice.PokerUtils;
+import OmahaHiLo.JavaPractice.CardsRankingUtils;
 
 public class Flush extends RankingHigh {
 
@@ -32,9 +32,9 @@ public class Flush extends RankingHigh {
 	@Override
 	public int CompareCards(Card[] handA, Card[] handB)
 	{
-		handA = PokerUtils.SortCardsDescending(handA, true);
-		handB = PokerUtils.SortCardsDescending(handB, true);
-		return PokerUtils.CompareCardsOneByOne(true, handA, handB, true);
+		handA = CardsRankingUtils.SortCardsDescending(handA, true);
+		handB = CardsRankingUtils.SortCardsDescending(handB, true);
+		return CardsRankingUtils.CompareCardsOneByOne(true, handA, handB, true);
 	}
 	
 }

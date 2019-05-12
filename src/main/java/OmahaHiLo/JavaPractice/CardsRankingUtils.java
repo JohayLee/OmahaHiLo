@@ -2,24 +2,36 @@ package OmahaHiLo.JavaPractice;
 
 import java.util.*;
 
+import OmahaHiLo.JavaPractice.RankingRules.Flush;
+import OmahaHiLo.JavaPractice.RankingRules.FourOfAKind;
+import OmahaHiLo.JavaPractice.RankingRules.FullHouse;
+import OmahaHiLo.JavaPractice.RankingRules.HighCard;
 import OmahaHiLo.JavaPractice.RankingRules.Low8;
+import OmahaHiLo.JavaPractice.RankingRules.OnePair;
 import OmahaHiLo.JavaPractice.RankingRules.RankingRule;
+import OmahaHiLo.JavaPractice.RankingRules.Straight;
+import OmahaHiLo.JavaPractice.RankingRules.StraightFlush;
+import OmahaHiLo.JavaPractice.RankingRules.ThreeOfAKind;
+import OmahaHiLo.JavaPractice.RankingRules.TwoPairs;
 /** General poker programming utilities.
  * 
  */
-public class PokerUtils {
+public class CardsRankingUtils {
+	public final static RankingRule OmahaHiRankingRules[] = {
+			new StraightFlush(),
+			new FourOfAKind(),
+			new FullHouse(),
+			new Flush(),
+			new Straight(),
+			new ThreeOfAKind(),
+			new TwoPairs(),
+			new OnePair(),
+			new HighCard(),
+	};
+	public final static RankingRule low8 = new Low8();
+
+	
 	public static final int NUM_CARDS_OF_A_HAND = 5;
-	public static Card[] GetCardsFromNotationsString(String notationsString)
-	{
-		// Convert card annotation string to card object
-		String[] cardNotation = notationsString.split("-");
-		Card[] cards = new Card[cardNotation.length];
-		for (int i = 0; i < cards.length; ++i)
-		{
-			cards[i] = new Card(cardNotation[i].charAt(0), cardNotation[i].charAt(1));
-		}
-		return cards;
-	}
 	
 	// For high rank, A means 14. However in low8 rank, it means 1.
 	public static Card[] SortCardsAscending(Card[] cards, boolean isAceTopRanking)
@@ -218,6 +230,7 @@ public class PokerUtils {
 		return GetMaxValuedHandOfRankingRule(map);
 	}
 	
+	// Get the combinations which has the highest value of the specific rule
 	private static Map<RankingRule, Card[]> GetMaxValuedHandOfRankingRule(Map<RankingRule, List<Card[]>> map)
 	{
 		Map<RankingRule, Card[]> maxValuableMap = new HashMap<RankingRule, Card[]>();

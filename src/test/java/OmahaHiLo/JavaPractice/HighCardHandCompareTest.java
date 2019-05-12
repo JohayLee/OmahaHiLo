@@ -37,16 +37,16 @@ public class HighCardHandCompareTest
     public void testHighCardHandCompare()
     {
     	// Mock data
-    	Card[] cards1 = PokerUtils.GetCardsFromNotationsString("Ah-Ks-Jc-Qh-9h");
-    	Card[] cards2 = PokerUtils.GetCardsFromNotationsString("Ah-Ks-Jc-Qh-7d");
+    	Card[] cards1 = Presentation.GetCardsFromNotationsString("Ah-Ks-Jc-Qh-9h");
+    	Card[] cards2 = Presentation.GetCardsFromNotationsString("Ah-Ks-Jc-Qh-7d");
     	HighCard r = new HighCard();
     	assertTrue(r.CompareCards(cards1, cards2) > 0 );
     }
     public void testHighCardHandCompareHighLess()
     {
     	// Mock data
-    	Card[] cards1 = PokerUtils.GetCardsFromNotationsString("Kh-Qs-Tc-Jh-8h");
-    	Card[] cards2 = PokerUtils.GetCardsFromNotationsString("Ah-Ks-Jc-Qh-7d");
+    	Card[] cards1 = Presentation.GetCardsFromNotationsString("Kh-Qs-Tc-Jh-8h");
+    	Card[] cards2 = Presentation.GetCardsFromNotationsString("Ah-Ks-Jc-Qh-7d");
     	HighCard r = new HighCard();
     	assertTrue(r.CompareCards(cards1, cards2) < 0 );
     }

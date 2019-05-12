@@ -1,7 +1,7 @@
 package OmahaHiLo.JavaPractice.RankingRules;
 
 import OmahaHiLo.JavaPractice.Card;
-import OmahaHiLo.JavaPractice.PokerUtils;
+import OmahaHiLo.JavaPractice.CardsRankingUtils;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -11,7 +11,7 @@ public class Low8 implements RankingRule
 	// Low8 ranking rule has no specific name. 
 	public String GetName()
 	{
-		return null;
+		return "Low8";
 	}
 		
 	public boolean ApplyToHandOfCards(Card[] aHandOfCards)
@@ -50,9 +50,9 @@ public class Low8 implements RankingRule
 	@Override
 	public int CompareCards(Card[] handA, Card[] handB)
 	{
-		handA = PokerUtils.SortCardsDescending(handA, false);
-		handB = PokerUtils.SortCardsDescending(handB, false);
-		return PokerUtils.CompareCardsOneByOne(false, handA, handB, false);
+		handA = CardsRankingUtils.SortCardsDescending(handA, false);
+		handB = CardsRankingUtils.SortCardsDescending(handB, false);
+		return CardsRankingUtils.CompareCardsOneByOne(false, handA, handB, false);
 	}
 
 }
