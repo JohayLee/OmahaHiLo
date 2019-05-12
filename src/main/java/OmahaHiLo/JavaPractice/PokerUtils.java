@@ -9,55 +9,6 @@ import OmahaHiLo.JavaPractice.RankingRules.RankingRule;
  */
 public class PokerUtils {
 	public static final int NUM_CARDS_OF_A_HAND = 5;
-	public static final int INVALID_RANK_VALUE = 0;
-	private static final Map<Character, Integer> mapRankCharToValueHigh = new HashMap<Character, Integer>() {
-		{
-			put('2', 2);
-			put('3', 3);
-			put('4', 4);
-			put('5', 5);
-			put('6', 6);
-			put('7', 7);
-			put('8', 8);
-			put('9', 9);
-			put('T', 10);
-			put('J', 11);
-			put('Q', 12);
-			put('K', 13);
-			put('A', 14);
-		}
-	};
-	private static final Map<Character, Integer> mapRankCharToValueLow8 = new HashMap<Character, Integer>() {
-		{
-			put('A', 1);
-			put('2', 2);
-			put('3', 3);
-			put('4', 4);
-			put('5', 5);
-			put('6', 6);
-			put('7', 7);
-			put('8', 8);
-		}
-	};
-	
-	public final static char[] RankChars = {
-			'A', '2','3','4','5','6','7','8','9','T','J','Q','K'
-			};
-	
-	public static int GetRankValue(char rankCharacter, boolean isHigh)
-	{
-		final Map<Character, Integer> map = (isHigh ? mapRankCharToValueHigh : mapRankCharToValueLow8);
-        Iterator<Map.Entry<Character, Integer> >  itr = map.entrySet().iterator(); 
-        // Iterate over the Map 
-        while (itr.hasNext()) { 
-        	Map.Entry<Character, Integer> entry = itr.next(); 
-        	if (rankCharacter == entry.getKey()) {
-        		return entry.getValue();
-        	} 
-        }
-        return INVALID_RANK_VALUE;
-	}
-
 	public static Card[] GetCardsFromNotationsString(String notationsString)
 	{
 		// Convert card annotation string to card object
@@ -115,17 +66,6 @@ public class PokerUtils {
 		}
 		return mapRankValueToCount;
 	}
-	public static Integer GetKeyFromValue(Map<Integer, Integer> map, Integer value) 
-	{
-		for (Integer obj : map.keySet()) 
-		{
-		      if (map.get(obj).equals(value)) 
-		      {
-		    	  return obj;
-		      }
-		 }
-		 return null;
-	}	
 	public static List<Integer> GetKeyListFromValue(Map<Integer, Integer> map, Integer value) 
 	{
 		List<Integer> keyList = new ArrayList<Integer>();
@@ -164,11 +104,11 @@ public class PokerUtils {
 		// The repetition element value in the list is descending
 		Collections.sort(numRepetitionList);
 		Collections.reverse(numRepetitionList);
-		Map<Integer, Integer> mapRankToCount = PokerUtils.GetRankToCountMap(hand, true);
+		Map<Integer, Integer> mapRankToCount = GetRankToCountMap(hand, true);
 		List<Integer> rankListAll = new ArrayList<Integer>();
 		for (int i = 0; i < numRepetitionList.size(); ++i)
 		{
-			List<Integer> rankList = PokerUtils.GetKeyListFromValue(mapRankToCount, numRepetitionList.get(i));
+			List<Integer> rankList = GetKeyListFromValue(mapRankToCount, numRepetitionList.get(i));
 			Collections.sort(rankList);
 			Collections.reverse(rankList);
 			rankListAll.addAll(rankList);
@@ -252,6 +192,73 @@ public class PokerUtils {
 		{
 			return null;
 		}
+	}
+	
+	// Get the combinations which match the high ranking rules
+	public static Map<RankingRule, Card[]> FilterByHighRankingRules(List<Card[]> fiveCardCombinations, RankingRule[] OmahaHiLoRankingRules)
+	{
+		Map<RankingRule, Card[]> maxValuableMap = new HashMap<RankingRule, Card[]>();
+		for (int i = 0; i < OmahaHiLoRankingRules.length; ++i)
+		{
+			Map<RankingRule, List<Card[]>> map = FilterByRankingRule(fiveCardCombinations, OmahaHiLoRankingRules[i]);
+			maxValuableMap = GetMaxValuedHandOfRankingRule(map);
+			if (maxValuableMap != null && !maxValuableMap.isEmpty())
+			{
+	        	return maxValuableMap; // The first matching rank is the highest.
+			}
+		}
+		return maxValuableMap;
+	}
+
+	// Get the combinations which match one ranking rule
+	public static Map<RankingRule, Card[]> FilterByOneRankingRule(List<Card[]> fiveCardCombinations, RankingRule rule)
+	{
+		Map<RankingRule, List<Card[]>> map = new HashMap<RankingRule, List<Card[]>>();
+		map.put(rule, fiveCardCombinations);
+		return GetMaxValuedHandOfRankingRule(map);
+	}
+	
+	private static Map<RankingRule, Card[]> GetMaxValuedHandOfRankingRule(Map<RankingRule, List<Card[]>> map)
+	{
+		Map<RankingRule, Card[]> maxValuableMap = new HashMap<RankingRule, Card[]>();
+    	Iterator<Map.Entry<RankingRule, List<Card[]>>> itr = map.entrySet().iterator();
+    	while (itr.hasNext())
+    	{
+        	Map.Entry<RankingRule, List<Card[]>> entry = itr.next();
+        	Card[] maxValuableHandOfTheRule = GetMaxValuedHandOfRankingRule(entry.getKey(), entry.getValue());
+	        if (maxValuableHandOfTheRule != null && maxValuableHandOfTheRule.length != 0)
+	        {
+	        	maxValuableMap.put(entry.getKey(), maxValuableHandOfTheRule);
+	        	return maxValuableMap; // The first matching rank is the highest.
+	        }
+	    		
+    	}
+    	return maxValuableMap;
+	}
+
+	// Get the combinations which match a ranking rule
+	public static Map<RankingRule, List<Card[]>> FilterByRankingRule(List<Card[]> combinations, RankingRule rule)
+	{
+		Map<RankingRule, List<Card[]>> mapRankingRuleToCombinations = new HashMap<RankingRule, List<Card[]>>();
+		Iterator<Card[]> itr = combinations.iterator();
+		while (itr.hasNext())
+		{
+			Card[] handOfCards = (Card[])itr.next();
+			// If the hand of cards matches the ranking rule, collect it and remove from combinations
+			if (rule.ApplyToHandOfCards(handOfCards))
+			{
+				if (!mapRankingRuleToCombinations.containsKey(rule))
+				{
+					mapRankingRuleToCombinations.put(rule, new ArrayList<Card[]>());
+				}
+				List<Card[]> listOfHandOfCards = mapRankingRuleToCombinations.get(rule);
+				listOfHandOfCards.add(handOfCards);
+				mapRankingRuleToCombinations.replace(rule, listOfHandOfCards);
+				
+				itr.remove();
+			}
+		}
+		return mapRankingRuleToCombinations;
 	}
 	
 }

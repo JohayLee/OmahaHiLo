@@ -159,8 +159,8 @@ public class OmahaComp
 		{
 			// All combinations for the 2 out of the 4 received cards
 			// Handle the ranking result for both players
-			players[i].highRanked = Player.FilterByHighRankingRules(players[i].CombineAsFiveCards(boardCards.PickCards()), OmahaHiRankingRules);
-			players[i].low8Ranked = Player.FilterByOneRankingRule(players[i].CombineAsFiveCards(boardCards.PickCards()), low8);
+			players[i].highRanked = PokerUtils.FilterByHighRankingRules(players[i].CombineAsFiveCards(boardCards.PickCards()), OmahaHiRankingRules);
+			players[i].low8Ranked = PokerUtils.FilterByOneRankingRule(players[i].CombineAsFiveCards(boardCards.PickCards()), low8);
 		}
 	}
 

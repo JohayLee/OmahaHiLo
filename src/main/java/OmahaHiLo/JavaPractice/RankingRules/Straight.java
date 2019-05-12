@@ -45,7 +45,7 @@ public class Straight extends RankingHigh {
 		{
 			int nextRank = aHandOfCards[i+1].GetRankValue(isAceTopRanking);
 			int thisRank = aHandOfCards[i].GetRankValue(isAceTopRanking);
-			if (nextRank == PokerUtils.INVALID_RANK_VALUE || thisRank == PokerUtils.INVALID_RANK_VALUE)
+			if (nextRank == Card.INVALID_RANK_VALUE || thisRank == Card.INVALID_RANK_VALUE)
 			{
 				return false;
 			}
@@ -71,11 +71,15 @@ public class Straight extends RankingHigh {
 	// Return - A=B: equal, A>B: positive value, A<B: negative value 
 	public static int CompareStraightCards(Card[] handA, Card[] handB)
 	{
+		// Sort the cards before checking straight.
 		boolean isAceTopRankingforHandA = CheckAceTopRankingInStraightHand(handA);
+		boolean isAceTopRankingforHandB = CheckAceTopRankingInStraightHand(handB);
 		// If both Ace is considered as top ranking, they are both either TJQKA or A2345, so equal
-		if (isAceTopRankingforHandA == CheckAceTopRankingInStraightHand(handB))
+		if (isAceTopRankingforHandA == isAceTopRankingforHandB)
 		{
-			return 0;
+			handA = PokerUtils.SortCardsDescending(handA, isAceTopRankingforHandA);
+			handB = PokerUtils.SortCardsDescending(handB, isAceTopRankingforHandB);
+			return PokerUtils.CompareCardsOneByOne(isAceTopRankingforHandA, handA, handB, true);
 		}
 		// the one with Ace as top ranking bigger.
 		else

@@ -44,7 +44,7 @@ public class FilterByRankingRuleTwoPairsTest
     	boardCards.SetCards("Ts-3h-9c-As-Ac");
     	List<Card[]> handA=playerA.CombineAsFiveCards(boardCards.PickCards());
     	// Filter by ranking rule
-    	Map<RankingRule, List<Card[]>> rankedListHandA = playerA.FilterByRankingRule(handA, OmahaComp.OmahaHiRankingRules[6]);
+    	Map<RankingRule, List<Card[]>> rankedListHandA = PokerUtils.FilterByRankingRule(handA, OmahaComp.OmahaHiRankingRules[6]);
     	assertTrue(rankedListHandA.size() == 0);
     	
     }
@@ -57,7 +57,7 @@ public class FilterByRankingRuleTwoPairsTest
     	boardCards.SetCards("2s-3h-9c-As-Ac");
     	List<Card[]> hand=player.CombineAsFiveCards(boardCards.PickCards());
     	// Filter by ranking rule
-    	Map<RankingRule, List<Card[]>> rankedListHand = player.FilterByRankingRule(hand, OmahaComp.OmahaHiRankingRules[6]);
+    	Map<RankingRule, List<Card[]>> rankedListHand = PokerUtils.FilterByRankingRule(hand, OmahaComp.OmahaHiRankingRules[6]);
     	assertTrue(rankedListHand.size() == 1);
     	
     }

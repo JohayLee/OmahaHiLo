@@ -19,7 +19,7 @@ public class Low8 implements RankingRule
 		// 1. None of the cards is higher than 8
 		for (int i = 0; i < aHandOfCards.length; ++i)
 		{
-			if (aHandOfCards[i].GetRankValue(false) == PokerUtils.INVALID_RANK_VALUE || aHandOfCards[i].GetRankValue(false) > 8 )
+			if (aHandOfCards[i].GetRankValue(false) == Card.INVALID_RANK_VALUE || aHandOfCards[i].GetRankValue(false) > 8 )
 			{
 				return false;
 			}

@@ -44,7 +44,7 @@ public class FilterByRankingRuleLow8Test
     	List<Card[]> handB = CombineAsFiveCardsB();
     	//Player playerB = new Player("HandB");
     	// Filter by ranking low8
-    	Map<RankingRule, List<Card[]>> rankedListHandB = Player.FilterByRankingRule(handB, new Low8());
+    	Map<RankingRule, List<Card[]>> rankedListHandB = PokerUtils.FilterByRankingRule(handB, new Low8());
     	assertTrue(rankedListHandB.size() == 1);
     	List<Card[]> cardsList = rankedListHandB.entrySet().iterator().next().getValue();
     	Card[] cards0 = cardsList.get(0);
@@ -63,7 +63,7 @@ public class FilterByRankingRuleLow8Test
     	List<Card[]> handB = CombineAsFiveCardsB();
     	//Player playerB = new Player("HandB");
     	// Filter by ranking low8
-    	Map<RankingRule, List<Card[]>> rankedListHandB = Player.FilterByRankingRule(handB, new Low8());
+    	Map<RankingRule, List<Card[]>> rankedListHandB = PokerUtils.FilterByRankingRule(handB, new Low8());
     	assertTrue(rankedListHandB.size() == 1);
     	Iterator<Map.Entry<RankingRule, List<Card[]>>> itr = rankedListHandB.entrySet().iterator();
     	if (itr.hasNext())

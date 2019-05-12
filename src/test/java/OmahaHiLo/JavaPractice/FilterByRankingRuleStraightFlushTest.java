@@ -44,7 +44,7 @@ public class FilterByRankingRuleStraightFlushTest
     	boardCards.SetCards("Ad-Kh-Qs-2d-3c");
     	List<Card[]> handA=playerA.CombineAsFiveCards(boardCards.PickCards());
     	// Filter by ranking rule
-    	Map<RankingRule, List<Card[]>> rankedListHandA = playerA.FilterByRankingRule(handA, OmahaComp.OmahaHiRankingRules[0]);
+    	Map<RankingRule, List<Card[]>> rankedListHandA = PokerUtils.FilterByRankingRule(handA, OmahaComp.OmahaHiRankingRules[0]);
     	assertTrue(rankedListHandA.size() == 0);
     	
     }
@@ -57,7 +57,7 @@ public class FilterByRankingRuleStraightFlushTest
     	boardCards.SetCards("Ac-Kc-Qc-2d-3c");
     	List<Card[]> hand=player.CombineAsFiveCards(boardCards.PickCards());
     	// Filter by ranking rule
-    	Map<RankingRule, List<Card[]>> rankedListHand = player.FilterByRankingRule(hand, OmahaComp.OmahaHiRankingRules[0]);
+    	Map<RankingRule, List<Card[]>> rankedListHand = PokerUtils.FilterByRankingRule(hand, OmahaComp.OmahaHiRankingRules[0]);
     	assertTrue(rankedListHand.size() == 1);
     }
  

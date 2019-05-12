@@ -44,7 +44,7 @@ public class FilterByRankingRuleFourOfAKindTest
     	boardCards.SetCards("Ad-Kh-5s-2d-Qd");
     	List<Card[]> handA=playerA.CombineAsFiveCards(boardCards.PickCards());
     	// Filter by ranking rule
-    	Map<RankingRule, List<Card[]>> rankedListHandA = playerA.FilterByRankingRule(handA, OmahaComp.OmahaHiRankingRules[1]);
+    	Map<RankingRule, List<Card[]>> rankedListHandA = PokerUtils.FilterByRankingRule(handA, OmahaComp.OmahaHiRankingRules[1]);
     	assertTrue(rankedListHandA.size() == 0);
     	
     }
@@ -57,7 +57,7 @@ public class FilterByRankingRuleFourOfAKindTest
     	boardCards.SetCards("Ad-5h-5s-2d-Qd");
     	List<Card[]> hand=player.CombineAsFiveCards(boardCards.PickCards());
     	// Filter by ranking rule
-    	Map<RankingRule, List<Card[]>> rankedListHand = player.FilterByRankingRule(hand, OmahaComp.OmahaHiRankingRules[1]);
+    	Map<RankingRule, List<Card[]>> rankedListHand = PokerUtils.FilterByRankingRule(hand, OmahaComp.OmahaHiRankingRules[1]);
     	assertTrue(rankedListHand.size() == 1);
     	
     }
