@@ -67,5 +67,3 @@ CompareCards -sort cards descending. Compare by rank one by one.
 ApplyToHandOfCards - Check to make sure none of the card is higher than 8. Also collect a distinct ranked hash-set, return false at the element adding if anyrank already exists. If none identical rank, return true.
 
 CompareCards -sort cards descending. Compare by rank one by one.
-
-To simplify, the program is not segregated to different layers, e.g., The ranking rule name etc. is just put into a rule object although it is supposed to be in the presentation layer.
