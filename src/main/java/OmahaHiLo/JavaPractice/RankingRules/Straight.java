@@ -38,6 +38,8 @@ public class Straight extends RankingHigh {
 	}
 	public static boolean CheckStraight(Card[] aHandOfCards, boolean isAceTopRanking)
 	{
+		// Sort the cards before checking straight.
+		aHandOfCards = PokerUtils.SortCardsDescending(aHandOfCards, isAceTopRanking);
 		// The delta between two elements shall be 1.
 		for (int i = 0; i < aHandOfCards.length - 1; i++)
 		{
