@@ -208,57 +208,6 @@ public class PokerUtils {
 		
 	}
 	
-	// Return - A=B: equal, A>B: positive value, A<B: negative value 
-	public static int CompareStraightCards(Card[] handA, Card[] handB)
-	{
-		boolean isAceTopRankingforHandA = CheckAceTopRankingInStraightHand(handA);
-		// If both Ace is considered as top ranking, they are both either TJQKA or A2345, so equal
-		if (isAceTopRankingforHandA == CheckAceTopRankingInStraightHand(handB))
-		{
-			return 0;
-		}
-		// the one with Ace as top ranking bigger.
-		else
-		{
-			return isAceTopRankingforHandA ? 1 : -1;
-		}
-	}
-	
-	public static boolean CheckAceTopRankingInStraightHand(Card[] hand)
-	{
-		// If the straight hand has both 'A' and '2', it is the A12345, consider A as lowest rank.
-		if (CheckStraightHandContainsSpecificRankCharacter(hand, 'A') && CheckStraightHandContainsSpecificRankCharacter(hand, '2'))
-		{
-			return false;
-		}
-		else
-		{
-			return true;
-		}
-	}
-	
-	public static boolean CheckStraightHandContainsSpecificRankValue(Card[] hand, int specificRankValue)
-	{
-		for (int i = 0; i < hand.length; i++)
-		{
-			if (hand[i].GetRankValue(true) == specificRankValue)
-			{
-				return true;
-			}
-		}
-		return false;
-	}
-	public static boolean CheckStraightHandContainsSpecificRankCharacter(Card[] hand, Character specificCharacter)
-	{
-		for (int i = 0; i < hand.length; i++)
-		{
-			if (hand[i].GetRankCharacter() == specificCharacter)
-			{
-				return true;
-			}
-		}
-		return false;
-	}
 	// Get the combinations which has the highest value of the specific rule
 	public static Card[] GetMaxValuedHandOfRankingRule(RankingRule rule, List<Card[]> matchedHands)
 	{
@@ -303,10 +252,6 @@ public class PokerUtils {
 		{
 			return null;
 		}
-	}
-	public static boolean QualifyLow8(Card[] cards, RankingRule rule)
-	{
-    	return (!(rule instanceof Low8) || rule.ApplyToHandOfCards(cards));
 	}
 	
 }

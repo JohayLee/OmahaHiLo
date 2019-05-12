@@ -18,6 +18,6 @@ public class StraightFlush extends RankingHigh {
 	@Override
 	public int CompareCards(Card[] handA, Card[] handB)
 	{
-		return PokerUtils.CompareStraightCards(handA, handB);
+		return Straight.CompareStraightCards(handA, handB);
 	}
 }
