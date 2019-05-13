@@ -206,30 +206,6 @@ public class CardsRankingUtils {
 		}
 	}
 	
-	// Get the combinations which match the high ranking rules
-	public static Map<RankingRule, Card[]> FilterByHighRankingRules(List<Card[]> fiveCardCombinations, RankingRule[] OmahaHiLoRankingRules)
-	{
-		Map<RankingRule, Card[]> maxValuableMap = new HashMap<RankingRule, Card[]>();
-		for (int i = 0; i < OmahaHiLoRankingRules.length; ++i)
-		{
-			Map<RankingRule, List<Card[]>> map = FilterByRankingRule(fiveCardCombinations, OmahaHiLoRankingRules[i]);
-			maxValuableMap = GetMaxValuedHandOfRankingRule(map);
-			if (maxValuableMap != null && !maxValuableMap.isEmpty())
-			{
-	        	return maxValuableMap; // The first matching rank is the highest.
-			}
-		}
-		return maxValuableMap;
-	}
-
-	// Get the combinations which match one ranking rule
-	public static Map<RankingRule, Card[]> FilterByOneRankingRule(List<Card[]> fiveCardCombinations, RankingRule rule)
-	{
-		Map<RankingRule, List<Card[]>> map = new HashMap<RankingRule, List<Card[]>>();
-		map.put(rule, fiveCardCombinations);
-		return GetMaxValuedHandOfRankingRule(map);
-	}
-	
 	// Get the combinations which has the highest value of the specific rule
 	private static Map<RankingRule, Card[]> GetMaxValuedHandOfRankingRule(Map<RankingRule, List<Card[]>> map)
 	{

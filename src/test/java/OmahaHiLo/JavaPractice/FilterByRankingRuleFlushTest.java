@@ -29,37 +29,24 @@ public class FilterByRankingRuleFlushTest
      */
     public static Test suite()
     {
-        return new TestSuite( FilterByRankingRuleThreeOfAKindTest.class );
+        return new TestSuite( FilterByRankingRuleFlushTest.class );
     }
 
     /**
-     * Test filtering a hand of cards by high Flush.
+     * Test filtering a hand of cards by flush.
      */
-    public void testAFilterByHighRankingRuleFlush()
+    public void testFilterByRankingRuleFlush()
     {
     	// Test  data
-    	Player playerA = new Player("HandA");
-    	playerA.ReceiveCards("Ac-Kd-Jd-3d");
+    	Player player = new Player("HandA");
+    	player.ReceiveCards("Ac-Kd-Jd-3d");
     	BoardCards boardCards = new BoardCards();
     	boardCards.SetCards("Ad-Kh-5s-2d-Qd");
-    	List<Card[]> handA=playerA.CombineAsFiveCards(boardCards.PickCards());
-    	// Filter by ranking rule
-    	Map<RankingRule, List<Card[]>> rankedListHandA = CardsRankingUtils.FilterByRankingRule(handA, OmahaComp.OmahaHiRankingRules[3]);
-    	assertTrue(rankedListHandA.size() == 1);
+    	TestHelper.CombineAndRank(player, boardCards);
+    	assertTrue(player.highRanked.size() == 1 && player.highRanked.entrySet().iterator().next().getKey().GetName() == "Flush");
+    	assertTrue(player.low8Ranked.size() == 0);
     	
     }
-    public void testBFilterByHighRankingRuleFlush()
-    {
-    	// Test  data
-    	Player player = new Player("HandB");
-    	player.ReceiveCards("5c-5d-6c-6d");
-    	BoardCards boardCards = new BoardCards();
-    	boardCards.SetCards("Ad-Kh-5s-2d-Qd");
-    	List<Card[]> hand=player.CombineAsFiveCards(boardCards.PickCards());
-    	// Filter by ranking rule
-    	Map<RankingRule, List<Card[]>> rankedListHand = CardsRankingUtils.FilterByRankingRule(hand, OmahaComp.OmahaHiRankingRules[3]);
-    	assertTrue(rankedListHand.size() == 1);
-    	
-    }
+    
  
 }

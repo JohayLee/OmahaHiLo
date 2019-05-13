@@ -38,13 +38,14 @@ public class FilterByRankingRuleThreeOfAKindTest
     public void testAFilterByHighRankingRuleThreeOfAKind()
     {
     	// Test  data
-    	Player playerA = new Player("HandA");
-    	playerA.ReceiveCards("Ac-Kd-Jd-3d");
+    	Player player = new Player("HandA");
+    	player.ReceiveCards("Ac-Kd-Jd-3d");
     	BoardCards boardCards = new BoardCards();
     	boardCards.SetCards("Ad-Kh-5s-2d-Qd");
-    	List<Card[]> handA=playerA.CombineAsFiveCards(boardCards.PickCards());
+    	player.CombineAsFiveCards(boardCards.PickCards());
+    	List<Card[]> hand=player.GetCombinationList();
     	// Filter by ranking rule
-    	Map<RankingRule, List<Card[]>> rankedListHandA = CardsRankingUtils.FilterByRankingRule(handA, OmahaComp.OmahaHiRankingRules[5]);
+    	Map<RankingRule, List<Card[]>> rankedListHandA = CardsRankingUtils.FilterByRankingRule(hand, OmahaComp.omahaHiRankingRules[5]);
     	assertTrue(rankedListHandA.size() == 0);
     	
     }
@@ -55,9 +56,10 @@ public class FilterByRankingRuleThreeOfAKindTest
     	player.ReceiveCards("5c-5d-6c-6d");
     	BoardCards boardCards = new BoardCards();
     	boardCards.SetCards("Ad-Kh-5s-2d-Qd");
-    	List<Card[]> hand=player.CombineAsFiveCards(boardCards.PickCards());
+    	player.CombineAsFiveCards(boardCards.PickCards());
+    	List<Card[]> hand=player.GetCombinationList();
     	// Filter by ranking rule
-    	Map<RankingRule, List<Card[]>> rankedListHand = CardsRankingUtils.FilterByRankingRule(hand, OmahaComp.OmahaHiRankingRules[5]);
+    	Map<RankingRule, List<Card[]>> rankedListHand = CardsRankingUtils.FilterByRankingRule(hand, OmahaComp.omahaHiRankingRules[5]);
     	assertTrue(rankedListHand.size() == 1);
     	
     }

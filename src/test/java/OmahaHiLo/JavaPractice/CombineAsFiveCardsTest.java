@@ -44,7 +44,8 @@ public class CombineAsFiveCardsTest
  	
  	
 		// All combinations for the 2 out of the 4 received cards
-		List<Card[]> cardsListA = playerA.CombineAsFiveCards(boardCards.PickCards());
+    	playerA.CombineAsFiveCards(boardCards.PickCards());
+    	List<Card[]> cardsListA = playerA.GetCombinationList();
         assertTrue( cardsListA.size() == 60 );
 
         assertTrue( cardsListA.get(0)[0].GetRankCharacter().equals('A'));

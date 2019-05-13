@@ -74,7 +74,7 @@ public class OmahaComp
 {
 	public final static int NUM_PLAYERS = 2;
 	// The ranking value in the array is from high to low, i.e. index 0 has the highest ranking value..
-	public final static RankingRule OmahaHiRankingRules[] = {
+	public final static RankingRule omahaHiRankingRules[] = {
 			new StraightFlush(),
 			new FourOfAKind(),
 			new FullHouse(),
@@ -89,9 +89,9 @@ public class OmahaComp
 	public static int GetRankRulePriority(RankingRule rule)
 	{
 		int priority = 0; // smaller is higher priority
-		for (int i = 0; i < OmahaHiRankingRules.length; ++i)
+		for (int i = 0; i < omahaHiRankingRules.length; ++i)
 		{
-			if (rule.getClass().toString().compareToIgnoreCase(OmahaHiRankingRules[i].getClass().toString()) == 0 )
+			if (rule.getClass().toString().compareToIgnoreCase(omahaHiRankingRules[i].getClass().toString()) == 0 )
 			{
 				priority = i;
 				break;
@@ -137,6 +137,7 @@ public class OmahaComp
 				Player players[] = new Player[NUM_PLAYERS]; // index 0 - player A, 1 - player B
 				BoardCards boardCards = new BoardCards();
 				DispatchCards(inputLine, players, boardCards);
+				
 
 				// 2: Now evaluate for each player.
 				EvaluatePlayers(players, boardCards);
@@ -169,10 +170,17 @@ public class OmahaComp
 		// Evaluate for both player A and B
 		for (int i = 0; i < players.length; ++i) 
 		{
-			// All combinations for the 2 out of the 4 received cards
-			// Handle the ranking result for both players
-			players[i].highRanked = CardsRankingUtils.FilterByHighRankingRules(players[i].CombineAsFiveCards(boardCards.PickCards()), OmahaHiRankingRules);
-			players[i].low8Ranked = CardsRankingUtils.FilterByOneRankingRule(players[i].CombineAsFiveCards(boardCards.PickCards()), low8);
+			// Set ranking rules
+			players[i].SetRankingRules(omahaHiRankingRules, low8);
+			// For high ranking, all combinations for the 2 out of the 4 received cards and 3 out of the board.
+			players[i].CombineAsFiveCards(boardCards.PickCards());
+			//Process the high ranking results
+			players[i].highRanked = players[i].FilterByTopRankingRule();
+			// For low ranking, all combinations for the 2 out of the 4 received cards and 3 out of the board.
+			// Note we have to re-combine the cards again as this this a new combination.
+			players[i].CombineAsFiveCards(boardCards.PickCards());
+			//Process the low8 ranking result
+			players[i].low8Ranked = players[i].FilterByLow8();
 		}
 	}
 

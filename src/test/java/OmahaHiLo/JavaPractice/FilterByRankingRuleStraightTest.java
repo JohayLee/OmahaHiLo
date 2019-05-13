@@ -38,14 +38,13 @@ public class FilterByRankingRuleStraightTest
     public void testAFilterByHighRankingRuleStraight()
     {
     	// Test  data
-    	Player playerA = new Player("HandA");
-    	playerA.ReceiveCards("Qc-Jd-Td-3d");
+    	Player player = new Player("HandA");
+    	player.ReceiveCards("Qc-Jd-Td-3d");
     	BoardCards boardCards = new BoardCards();
     	boardCards.SetCards("Ad-Kh-Qs-2d-3c");
-    	List<Card[]> handA=playerA.CombineAsFiveCards(boardCards.PickCards());
-    	// Filter by ranking rule
-    	Map<RankingRule, List<Card[]>> rankedListHandA = CardsRankingUtils.FilterByRankingRule(handA, OmahaComp.OmahaHiRankingRules[4]);
-    	assertTrue(rankedListHandA.size() == 1);
+    	TestHelper.CombineAndRank(player, boardCards);
+    	assertTrue(player.highRanked.size() == 1 && player.highRanked.entrySet().iterator().next().getKey().GetName() == "Straight");
+    	assertTrue(player.low8Ranked.size() == 0);
     	
     }
     public void testBFilterByHighRankingRuleStraight()
@@ -55,10 +54,9 @@ public class FilterByRankingRuleStraightTest
     	player.ReceiveCards("Tc-Jc-8h-6d");
     	BoardCards boardCards = new BoardCards();
     	boardCards.SetCards("Ad-Kh-Qs-2d-3c");
-    	List<Card[]> hand=player.CombineAsFiveCards(boardCards.PickCards());
-    	// Filter by ranking rule
-    	Map<RankingRule, List<Card[]>> rankedListHand = CardsRankingUtils.FilterByRankingRule(hand, OmahaComp.OmahaHiRankingRules[4]);
-    	assertTrue(rankedListHand.size() == 1);
+    	TestHelper.CombineAndRank(player, boardCards);
+    	assertTrue(player.highRanked.size() == 1 && player.highRanked.entrySet().iterator().next().getKey().GetName() == "Straight");
+    	assertTrue(player.low8Ranked.size() == 1 && player.low8Ranked.entrySet().iterator().next().getKey().GetName() == "Low8");
     	
     }
  

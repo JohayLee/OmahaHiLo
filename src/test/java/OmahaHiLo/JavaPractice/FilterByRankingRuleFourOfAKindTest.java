@@ -38,27 +38,25 @@ public class FilterByRankingRuleFourOfAKindTest
     public void testAFilterByHighRankingRuleFourOfAKind()
     {
     	// Test  data
-    	Player playerA = new Player("HandA");
-    	playerA.ReceiveCards("Ac-Kd-Jd-3d");
+    	Player player = new Player("Hand");
+    	player.ReceiveCards("Ac-Kd-Jd-3d");
     	BoardCards boardCards = new BoardCards();
     	boardCards.SetCards("Ad-Kh-5s-2d-Qd");
-    	List<Card[]> handA=playerA.CombineAsFiveCards(boardCards.PickCards());
-    	// Filter by ranking rule
-    	Map<RankingRule, List<Card[]>> rankedListHandA = CardsRankingUtils.FilterByRankingRule(handA, OmahaComp.OmahaHiRankingRules[1]);
-    	assertTrue(rankedListHandA.size() == 0);
+    	TestHelper.CombineAndRank(player, boardCards);
+    	assertTrue(player.highRanked.size() == 1 && player.highRanked.entrySet().iterator().next().getKey().GetName() != "4-of-a-Kind");
+    	assertTrue(player.low8Ranked.size() == 0);
     	
     }
     public void testBFilterByHighRankingRuleFourOfAKind()
     {
     	// Test  data
-    	Player player = new Player("HandB");
+    	Player player = new Player("Hand");
     	player.ReceiveCards("5c-5d-6c-6d");
     	BoardCards boardCards = new BoardCards();
     	boardCards.SetCards("Ad-5h-5s-2d-Qd");
-    	List<Card[]> hand=player.CombineAsFiveCards(boardCards.PickCards());
-    	// Filter by ranking rule
-    	Map<RankingRule, List<Card[]>> rankedListHand = CardsRankingUtils.FilterByRankingRule(hand, OmahaComp.OmahaHiRankingRules[1]);
-    	assertTrue(rankedListHand.size() == 1);
+    	TestHelper.CombineAndRank(player, boardCards);
+    	assertTrue(player.highRanked.size() == 1 && player.highRanked.entrySet().iterator().next().getKey().GetName() == "4-of-a-Kind");
+    	assertTrue(player.low8Ranked.size() == 0);
     	
     }
  
