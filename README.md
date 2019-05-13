@@ -68,4 +68,5 @@ ApplyToHandOfCards - Check to make sure none of the card is higher than 8. Also 
 
 CompareCards -sort cards descending. Compare by rank one by one.
 
-To simplify, the program is not segregated to different layers, e.g., The ranking rule name etc. is just put into a rule object although it is supposed to be in the presentation layer.
+TODO: 
+To make it cleaner, we can refactor the filtering by ranking rules in CardsRankingUtils to Player.
