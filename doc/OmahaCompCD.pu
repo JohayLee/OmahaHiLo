@@ -1,0 +1,50 @@
+@startuml OmahaHiLo_CD
+
+show methods
+show fields
+
+class OmahaComp {
+    main()
+    DispatchCards()
+    EvaluatePlayers()
+}
+class Player {
+    SetRankingRules()
+    ReceiveCards()
+    PickCards()
+    CombineAsFiveCards()
+    FilterByTopRankingRule()
+    FilterByLow8()
+
+}
+class BoardCards {
+    SetCards()
+    PickCards()
+}
+class Presentation {
+    GeneratePresentation()
+}
+
+interface RankingRule {
+    GetName()
+    ApplyToHandOfCards()
+    CompareCards()
+}
+
+
+
+class CardsRankingUtils{
+
+}
+
+OmahaComp-->Player
+OmahaComp-->BoardCards
+OmahaComp-->Presentation
+OmahaComp-->RankingRule
+Player-->RankingRule
+Presentation-->RankingRule
+CardsRankingUtils-->RankingRule
+Player-->CardsRankingUtils
+RankingRule<|.. RankingHigh
+RankingRule<|.. Low8
+@enduml

@@ -1,0 +1,41 @@
+@startuml OmahaHiLo_CD
+
+interface RankingRule {
+    GetName()
+    ApplyToHandOfCards()
+    CompareCards()
+}
+
+class RankingHigh {
+}
+
+class Flush{
+}
+
+class FourOfAKind{
+}
+class FullHouse{
+}
+class Straight{
+}
+class StraightFlush{
+}
+class ThreeOfAKind{
+}
+class TwoPairs{
+}
+class OnePair{
+}
+class HighCard{
+}
+RankingRule<|.. RankingHigh
+RankingHigh<|-- Flush
+RankingHigh<|-- FourOfAKind
+RankingHigh<|-- FullHouse
+RankingHigh<|-- Straight
+RankingHigh<|-- StraightFlush
+RankingHigh<|-- ThreeOfAKind
+RankingHigh<|-- TwoPairs
+RankingHigh<|-- OnePair
+RankingHigh<|-- HighCard
+@enduml
