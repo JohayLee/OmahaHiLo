@@ -67,3 +67,14 @@ CompareCards -sort cards descending. Compare by rank one by one.
 ApplyToHandOfCards - Check to make sure none of the card is higher than 8. Also collect a distinct ranked hash-set, return false at the element adding if anyrank already exists. If none identical rank, return true.
 
 CompareCards -sort cards descending. Compare by rank one by one.
+
+**Class Diagrams**
+
+*OmahaComp Class Diagram:*
+
+![OmahaComp_CD](https://raw.githubusercontent.com/JohayLee/OmahaHiLo/master/doc/out/OmahaCompCD/OmahaHiLo_CD.png)
+
+
+*HighRanking Class Diagram:*
+
+![RankingHigh_CD](https://raw.githubusercontent.com/JohayLee/OmahaHiLo/master/doc/out/RankingHighCD/OmahaHiLo_CD.png)
