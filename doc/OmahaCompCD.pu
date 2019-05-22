@@ -40,7 +40,6 @@ class CardsRankingUtils{
 OmahaComp-->Player
 OmahaComp-->BoardCards
 OmahaComp-->Presentation
-OmahaComp-->RankingRule
 Player-->RankingRule
 Presentation-->RankingRule
 CardsRankingUtils-->RankingRule
